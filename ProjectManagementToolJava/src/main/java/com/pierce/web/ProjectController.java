@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,12 +42,18 @@ public class ProjectController {
 	@GetMapping("/{projectId}")
 	public ResponseEntity<?> getProjectById(@PathVariable String projectId){
 		
-		Project project = projectService.findProjectByIdentifier(projectId);
-		return new ResponseEntity<Project>(project, HttpStatus.OK);
+		Project createdProject = projectService.findProjectByIdentifier(projectId);
+		return new ResponseEntity<Project>(createdProject, HttpStatus.OK);
 	}
 	
 	@GetMapping("/all")
 	public Iterable<Project> getAllProjects(){return projectService.findAllProjects();}
+	
+	@PutMapping("/{projectId}")
+	public ResponseEntity<?> updateProject(@PathVariable String projectId, @RequestBody Project newProjectInfo){
+		Project updatedProject = projectService.updateProject(projectId, newProjectInfo);
+		return new ResponseEntity<Project>(updatedProject, HttpStatus.OK);
+	}
 	
 	@DeleteMapping("/{projectId}")
 	public ResponseEntity<?> deleteProject(@PathVariable String projectId){

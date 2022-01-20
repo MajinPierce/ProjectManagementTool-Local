@@ -22,6 +22,19 @@ public class ProjectService {
 		}
 	}
 	
+	public Project updateProject(String projectId, Project newProjectInfo) {
+		Project project = findProjectByIdentifier(projectId.toUpperCase());
+		
+		if(newProjectInfo.getProjectName() != null) {
+			project.setProjectName(newProjectInfo.getProjectName());
+		}
+		if(newProjectInfo.getDescription() != null) {
+			project.setDescription(newProjectInfo.getDescription());
+		}
+		
+		return projectRepository.save(project);
+	}
+	
 	public Project findProjectByIdentifier(String projectId) {
 		
 		Project project = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
