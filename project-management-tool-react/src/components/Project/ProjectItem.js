@@ -1,6 +1,6 @@
 import React from "react";
 
-const ProjectItem = () => {
+const ProjectItem = (props) => {
   return (
     <div className="container">
       <div className="card card-body bg-light mb-3">
