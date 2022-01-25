@@ -1,134 +1,134 @@
-import React, { useEffect, useState } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { connect, useSelector } from "react-redux";
+import { connect } from "react-redux";
 import { createProject } from "../../actions/ProjectActions";
 
-const AddProject = (props) => {
-  const [enteredProjectName, setEnteredProjectName] = useState("");
-  const [enteredProjectIdentifier, setEnteredProjectIdentifier] = useState("");
-  const [enteredDescription, setEnteredDescription] = useState("");
-  const [enteredStartDate, setEnteredStartDate] = useState("");
-  const [enteredEndDate, setEnteredEndDate] = useState("");
-  const errors = useSelector();
+class AddProject extends Component {
+  constructor() {
+    super();
 
-  const submitHandler = (event) => {
-    //prevent page reset
-    event.preventDefault();
-    //create project object to send to api
-    const projectData = {
-      projectName: enteredProjectName,
-      projectIdentifier: enteredProjectIdentifier,
-      description: enteredDescription,
-      startDate: enteredStartDate,
-      endDate: enteredEndDate,
+    this.state = {
+      projectName: "",
+      projectIdentifier: "",
+      description: "",
+      startDate: "",
+      endDate: "",
+      errors: {},
     };
-    props.createProject(projectData, props.history);
-  };
 
-  const projectNameChangeHandler = (event) => {
-    setEnteredProjectName(event.target.value);
-  };
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
 
-  const projectIdentifierChangeHandler = (event) => {
-    setEnteredProjectIdentifier(event.target.value);
-  };
-
-  const descriptionChangeHandler = (event) => {
-    setEnteredDescription(event.target.value);
-  };
-
-  const startDateChangeHandler = (event) => {
-    setEnteredStartDate(event.target.value);
-  };
-
-  const endDateChangeHandler = (event) => {
-    setEnteredEndDate(event.target.value);
-  };
-
-  /*
   //life cycle hooks
-  const componentWillReceiveProps = (nextProps) => {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
-      setErrors(nextProps.errors);
+      this.setState({ errors: nextProps.errors });
     }
-  };
-  */
+  }
 
-  return (
-    <div className="project">
-      <div className="container">
-        <div className="row">
-          <div className="col-md-8 m-auto">
-            <h5 className="display-4 text-center">Create Project form</h5>
-            <hr />
-            <form onSubmit={submitHandler}>
-              <div className="form-group">
-                <input
-                  type="text"
-                  className="form-control form-control-lg "
-                  placeholder="Project Name"
-                  name="projectName"
-                  value={enteredProjectName}
-                  onChange={projectNameChangeHandler}
-                />
-                <p>{errors.projectName}</p>
-              </div>
-              <div className="form-group">
-                <input
-                  type="text"
-                  className="form-control form-control-lg"
-                  placeholder="Unique Project ID"
-                  name="projectIdentifier"
-                  value={enteredProjectIdentifier}
-                  onChange={projectIdentifierChangeHandler}
-                />
-              </div>
-              <div className="form-group">
-                <textarea
-                  className="form-control form-control-lg"
-                  placeholder="Project Description"
-                  name="description"
-                  value={enteredDescription}
-                  onChange={descriptionChangeHandler}
-                ></textarea>
-              </div>
-              <div className="form-group">
-                <label>Start Date</label>
-                <input
-                  type="date"
-                  className="form-control form-control-lg"
-                  name="startDate"
-                  value={enteredStartDate}
-                  onChange={startDateChangeHandler}
-                />
-              </div>
-              <div className="form-group">
-                <label>Estimated End Date</label>
-                <input
-                  type="date"
-                  className="form-control form-control-lg"
-                  name="endDate"
-                  value={enteredEndDate}
-                  onChange={endDateChangeHandler}
-                />
-              </div>
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
 
-              <input type="submit" className="btn btn-primary btn-block mt-4" />
-            </form>
+  onSubmit(e) {
+    e.preventDefault();
+    const newProject = {
+      projectName: this.state.projectName,
+      projectIdentifier: this.state.projectIdentifier,
+      description: this.state.description,
+      startDate: this.state.startDate,
+      endDate: this.state.endDate,
+    };
+    this.props.createProject(newProject, this.props.history);
+  }
+
+  render() {
+    const { errors } = this.state;
+
+    return (
+      <div>
+        <div className="project">
+          <div className="container">
+            <div className="row">
+              <div className="col-md-8 m-auto">
+                <h5 className="display-4 text-center">Create Project form</h5>
+                <hr />
+                <form onSubmit={this.onSubmit}>
+                  <div className="form-group">
+                    <input
+                      type="text"
+                      className="form-control form-control-lg "
+                      placeholder="Project Name"
+                      name="projectName"
+                      value={this.state.projectName}
+                      onChange={this.onChange}
+                    />
+                    <p>{errors.projectName}</p>
+                  </div>
+                  <div className="form-group">
+                    <input
+                      type="text"
+                      className="form-control form-control-lg"
+                      placeholder="Unique Project ID"
+                      name="projectIdentifier"
+                      value={this.state.projectIdentifier}
+                      onChange={this.onChange}
+                    />
+                    <p>{errors.projectIdentifier}</p>
+                  </div>
+                  <div className="form-group">
+                    <textarea
+                      className="form-control form-control-lg"
+                      placeholder="Project Description"
+                      name="description"
+                      value={this.state.description}
+                      onChange={this.onChange}
+                    />
+                    <p>{errors.description}</p>
+                  </div>
+                  <h6>Start Date</h6>
+                  <div className="form-group">
+                    <input
+                      type="date"
+                      className="form-control form-control-lg"
+                      name="start_date"
+                      value={this.state.startDate}
+                      onChange={this.onChange}
+                    />
+                  </div>
+                  <h6>Estimated End Date</h6>
+                  <div className="form-group">
+                    <input
+                      type="date"
+                      className="form-control form-control-lg"
+                      name="end_date"
+                      value={this.state.endDate}
+                      onChange={this.onChange}
+                    />
+                  </div>
+
+                  <input
+                    type="submit"
+                    className="btn btn-primary btn-block mt-4"
+                  />
+                </form>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-};
-
-const mapStateToProps = (state) => ({
-  errors: state.errors,
-});
+    );
+  }
+}
 
 AddProject.propTypes = {
   createProject: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired,
 };
 
-export default connect(null, { createProject })(AddProject);
+const mapStateToProps = (state) => ({
+  errors: state.errors,
+});
+
+export default connect(mapStateToProps, { createProject })(AddProject);
