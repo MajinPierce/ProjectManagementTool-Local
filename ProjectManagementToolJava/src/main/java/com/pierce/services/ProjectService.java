@@ -31,6 +31,12 @@ public class ProjectService {
 		if(newProjectInfo.getDescription() != null) {
 			project.setDescription(newProjectInfo.getDescription());
 		}
+		if(newProjectInfo.getStartDate() != null) {
+			project.setStartDate(newProjectInfo.getStartDate());
+		}
+		if(newProjectInfo.getEndDate() != null) {
+			project.setEndDate(newProjectInfo.getEndDate());
+		}
 		
 		return projectRepository.save(project);
 	}
