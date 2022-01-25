@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { createProject } from "../../actions/ProjectActions";
 
 const AddProject = (props) => {
   const [enteredProjectName, setEnteredProjectName] = useState("");
@@ -18,13 +21,7 @@ const AddProject = (props) => {
       startDate: enteredStartDate,
       endDate: enteredEndDate,
     };
-    console.log(projectData);
-    //reset form
-    setEnteredProjectName("");
-    setEnteredProjectIdentifier("");
-    setEnteredDescription("");
-    setEnteredStartDate("");
-    setEnteredEndDate("");
+    props.createProject(projectData, props.history);
   };
 
   const projectNameChangeHandler = (event) => {
@@ -114,4 +111,8 @@ const AddProject = (props) => {
   );
 };
 
-export default AddProject;
+AddProject.propTypes = {
+  createProject: PropTypes.func.isRequired,
+};
+
+export default connect(null, { createProject })(AddProject);
