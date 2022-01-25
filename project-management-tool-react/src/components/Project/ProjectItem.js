@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const ProjectItem = (props) => {
   return (
@@ -19,11 +20,11 @@ const ProjectItem = (props) => {
                   <i className="fas fa-flag-checkered pr-1"> Project Board </i>
                 </li>
               </a>
-              <a href="#">
+              <Link to={`/updateProject/${props.project.projectIdentifier}`}>
                 <li className="list-group-item update">
                   <i className="fas fa-edit pr-1"> Update Project Info</i>
                 </li>
-              </a>
+              </Link>
               <a href="">
                 <li className="list-group-item delete">
                   <i className="fas fa-minus-circle pr-1"> Delete Project</i>
