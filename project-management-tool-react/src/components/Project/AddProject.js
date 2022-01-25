@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { createProject } from "../../actions/ProjectActions";
 
 const AddProject = (props) => {
@@ -9,6 +9,7 @@ const AddProject = (props) => {
   const [enteredDescription, setEnteredDescription] = useState("");
   const [enteredStartDate, setEnteredStartDate] = useState("");
   const [enteredEndDate, setEnteredEndDate] = useState("");
+  const errors = useSelector();
 
   const submitHandler = (event) => {
     //prevent page reset
@@ -44,6 +45,15 @@ const AddProject = (props) => {
     setEnteredEndDate(event.target.value);
   };
 
+  /*
+  //life cycle hooks
+  const componentWillReceiveProps = (nextProps) => {
+    if (nextProps.errors) {
+      setErrors(nextProps.errors);
+    }
+  };
+  */
+
   return (
     <div className="project">
       <div className="container">
@@ -61,6 +71,7 @@ const AddProject = (props) => {
                   value={enteredProjectName}
                   onChange={projectNameChangeHandler}
                 />
+                <p>{errors.projectName}</p>
               </div>
               <div className="form-group">
                 <input
@@ -111,8 +122,13 @@ const AddProject = (props) => {
   );
 };
 
+const mapStateToProps = (state) => ({
+  errors: state.errors,
+});
+
 AddProject.propTypes = {
   createProject: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired,
 };
 
 export default connect(null, { createProject })(AddProject);
