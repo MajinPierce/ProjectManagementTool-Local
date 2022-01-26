@@ -8,11 +8,13 @@ class AddProject extends Component {
   constructor() {
     super();
 
+    this.today = this.calculateLocalDate();
+
     this.state = {
       projectName: "",
       projectIdentifier: "",
       description: "",
-      startDate: "",
+      startDate: this.today,
       endDate: "",
       errors: {},
     };
@@ -27,6 +29,36 @@ class AddProject extends Component {
       this.setState({ errors: nextProps.errors });
     }
   }
+
+  calculateLocalDate() {
+    let date = new Date();
+    let thisLocale = Intl.DateTimeFormat().resolvedOptions().locale;
+    let thisTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    let formatter = new Intl.DateTimeFormat(thisLocale, {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      timeZone: thisTimeZone,
+    });
+    let today = formatter.formatToParts(date);
+    if (today[2].value < "10") {
+      today[2].value = "0" + today[2].value;
+    }
+    if (today[0].value < "10") {
+      today[0].value = "0" + today[0].value;
+    }
+    let todayFormatted =
+      today[4].value + "-" + today[0].value + "-" + today[2].value;
+    return todayFormatted;
+  }
+
+  // calculateLocalDate() {
+  //   let thisLocale = Intl.DateTimeFormat().resolvedOptions().locale;
+  //   let thisTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  //   let d = new Date();
+  //   let today = d.toLocaleString(thisLocale, { timeZone: thisTimeZone });
+  //   return today.split(",")[0];
+  // }
 
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
@@ -112,6 +144,7 @@ class AddProject extends Component {
                       type="date"
                       className="form-control form-control-lg"
                       name="startDate"
+                      min={this.today}
                       value={this.state.startDate}
                       onChange={this.onChange}
                     />
@@ -122,6 +155,7 @@ class AddProject extends Component {
                       type="date"
                       className="form-control form-control-lg"
                       name="endDate"
+                      min={this.state.startDate}
                       value={this.state.endDate}
                       onChange={this.onChange}
                     />
