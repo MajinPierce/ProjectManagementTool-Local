@@ -53,7 +53,7 @@ public class ProjectTaskService {
 			//persist and return project task
 			return projectTaskRepository.save(projectTask);
 		} catch(Exception e) {
-			throw new ProjectNotFoundException("Project ID '" + projectIdentifier + "' does not exist");
+			throw new ProjectNotFoundException("Project ID '" + projectIdentifier + "' not found");
 		}
 	}
 	
@@ -61,14 +61,30 @@ public class ProjectTaskService {
 		Project project = projectRepository.findByProjectIdentifier(id);
 
         if(project==null){
-            throw new ProjectNotFoundException("Project with ID: '"+ id +"' does not exist");
+            throw new ProjectNotFoundException("Project ID '"+ id +"' not found");
         }
 		
         return projectTaskRepository.findByProjectIdentifierOrderByPriority(id);
     }
 	
 	public ProjectTask findPTByProjectSequence(String backlog_id, String pt_id){
+		
+		Backlog backlog = backlogRepository.findByProjectIdentifier(backlog_id);
+		
+		if(backlog==null) {
+			throw  new ProjectNotFoundException("Project ID '" + backlog_id + "' not found");
+		}
+		
+		ProjectTask projectTask = projectTaskRepository.findByProjectSequence(pt_id);
+		
+		if(projectTask == null) {
+			throw  new ProjectNotFoundException("Project task '" + pt_id + "' not found in project '" + backlog_id + "'");
+		}
+		
+		if(!projectTask.getProjectIdentifier().equals(backlog_id)) {
+			throw new ProjectNotFoundException("Project task '" + pt_id + "' not found in project '" + backlog_id + "'");
+		}
 
-        return projectTaskRepository.findByProjectSequence(pt_id);
+        return projectTask;
     }
 }
