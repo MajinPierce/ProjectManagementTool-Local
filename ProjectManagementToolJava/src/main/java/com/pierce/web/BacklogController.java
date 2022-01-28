@@ -35,8 +35,8 @@ public class BacklogController {
     public ResponseEntity<?> addPTtoBacklog(@Valid @RequestBody ProjectTask newProjectTask, 
     										BindingResult result, @PathVariable String backlog_id){
 
-        ResponseEntity<?> erroMap = mapValidationErrorService.MapValidationService(result);
-        if (erroMap != null) return erroMap;
+        ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
+        if (errorMap != null) return errorMap;
 
         ProjectTask projectTask = projectTaskService.addProjectTask(backlog_id, newProjectTask);
 
