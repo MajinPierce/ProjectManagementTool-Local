@@ -27,15 +27,16 @@ public class ProjectTaskService {
 		// set up project sequence
 		Integer backlogSequence = backlog.getPTSequence();
 		backlogSequence++;
+		backlog.setPTSequence(backlogSequence);
 		
 		//add sequence to project task
 		projectTask.setProjectSequence(projectIdentifier + "-" + backlogSequence);
-		projectTask.setProjectIdentifer(projectIdentifier);
+		projectTask.setProjectIdentifier(projectIdentifier);
 		
 		//default task priority
-//		if(projectTask.getPriority() == 0 || projectTask.getPriority() == null) {
-//			projectTask.setPriority(3);
-//		}
+		if(projectTask.getPriority() == null) {
+			projectTask.setPriority(3);
+		}
 		
 		//default project status
 		//enum statuses maybe later
