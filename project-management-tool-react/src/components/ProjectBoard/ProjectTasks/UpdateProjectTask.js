@@ -6,30 +6,100 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 class UpdateProjectTask extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      id: "",
+      projectSequence: "",
+      summary: "",
+      acceptanceCriteria: "",
+      status: "",
+      priority: "",
+      dueDate: "",
+      projectIdentifier: "",
+      createAt: "",
+    };
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
   componentDidMount() {
     const { backlog_id, pt_id } = this.props.match.params;
     this.props.getProjectTask(backlog_id, pt_id, this.props.history);
   }
 
+  componentWillReceiveProps(nextProps) {
+    const {
+      id,
+      projectSequence,
+      summary,
+      acceptanceCriteria,
+      status,
+      priority,
+      dueDate,
+      projectIdentifier,
+      createAt,
+    } = nextProps.project_task;
+
+    this.setState({
+      id,
+      projectSequence,
+      summary,
+      acceptanceCriteria,
+      status,
+      priority,
+      dueDate,
+      projectIdentifier,
+      createAt,
+    });
+  }
+
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
+  onSubmit(e) {
+    e.preventDefault();
+
+    const UpdateProjectTask = {
+      id: this.state.id,
+      projectSequence: this.state.projectSequence,
+      summary: this.state.summary,
+      acceptanceCriteria: this.state.acceptanceCriteria,
+      status: this.state.status,
+      priority: this.state.priority,
+      dueDate: this.state.dueDate,
+      projectIdentifier: this.state.projectIdentifier,
+      createAt: this.state.createAt,
+    };
+
+    console.log(UpdateProjectTask);
+  }
+
   render() {
-    const { id } = this.props.match.params;
     return (
       <div className="add-PBI">
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <Link to={`/projectBoard/${id}`} className="btn btn-light">
+              <a href="#" className="btn btn-light">
                 Back to Project Board
-              </Link>
+              </a>
               <h4 className="display-4 text-center">Update Project Task</h4>
-              <p className="lead text-center">Project Name + Project Code</p>
-              <form>
+              <p className="lead text-center">
+                Project Name: {this.state.projectIdentifier} | Project Task ID:{" "}
+                {this.state.projectSequence}{" "}
+              </p>
+              <form onSubmit={this.onSubmit}>
                 <div className="form-group">
                   <input
                     type="text"
                     className="form-control form-control-lg"
                     name="summary"
                     placeholder="Project Task summary"
+                    value={this.state.summary}
+                    onChange={this.onChange}
                   />
                 </div>
                 <div className="form-group">
@@ -37,6 +107,8 @@ class UpdateProjectTask extends Component {
                     className="form-control form-control-lg"
                     placeholder="Acceptance Criteria"
                     name="acceptanceCriteria"
+                    value={this.state.acceptanceCriteria}
+                    onChange={this.onChange}
                   />
                 </div>
                 <h6>Due Date</h6>
@@ -45,12 +117,16 @@ class UpdateProjectTask extends Component {
                     type="date"
                     className="form-control form-control-lg"
                     name="dueDate"
+                    value={this.state.dueDate}
+                    onChange={this.onChange}
                   />
                 </div>
                 <div className="form-group">
                   <select
                     className="form-control form-control-lg"
                     name="priority"
+                    value={this.state.priority}
+                    onChange={this.onChange}
                   >
                     <option value={0}>Select Priority</option>
                     <option value={1}>High</option>
@@ -58,10 +134,13 @@ class UpdateProjectTask extends Component {
                     <option value={3}>Low</option>
                   </select>
                 </div>
+
                 <div className="form-group">
                   <select
                     className="form-control form-control-lg"
                     name="status"
+                    value={this.state.status}
+                    onChange={this.onChange}
                   >
                     <option value="">Select Status</option>
                     <option value="TO_DO">TO DO</option>
@@ -69,6 +148,7 @@ class UpdateProjectTask extends Component {
                     <option value="DONE">DONE</option>
                   </select>
                 </div>
+
                 <input
                   type="submit"
                   className="btn btn-primary btn-block mt-4"
