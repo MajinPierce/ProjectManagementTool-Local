@@ -14,6 +14,7 @@ class ProjectBoard extends Component {
   }
 
   render() {
+    const { project_tasks } = this.props.backlog;
     return (
       <div className="container">
         <Link
@@ -24,7 +25,7 @@ class ProjectBoard extends Component {
         </Link>
         <br />
         <hr />
-        <Backlog />
+        <Backlog project_tasks_prop={project_tasks} />
       </div>
     );
   }
