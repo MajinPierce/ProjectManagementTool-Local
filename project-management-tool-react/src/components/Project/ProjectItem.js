@@ -22,11 +22,11 @@ const ProjectItem = (props) => {
           </div>
           <div className="col-md-4 d-lg-block">
             <ul className="list-group">
-              <a href="#">
+              <Link to={`/projectBoard/${props.project.projectIdentifier}`}>
                 <li className="list-group-item board">
                   <i className="fas fa-flag-checkered pr-1"> Project Board </i>
                 </li>
-              </a>
+              </Link>
               <Link to={`/updateProject/${props.project.projectIdentifier}`}>
                 <li className="list-group-item update">
                   <i className="fas fa-edit pr-1"> Update Project Info</i>
