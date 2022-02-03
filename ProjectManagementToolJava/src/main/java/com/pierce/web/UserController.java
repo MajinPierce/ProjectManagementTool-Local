@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pierce.domain.User;
 import com.pierce.services.MapValidationErrorService;
 import com.pierce.services.UserService;
+import com.pierce.validator.UserValidator;
 
 @RestController
 @RequestMapping("/api/users")
@@ -24,10 +25,14 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    private UserValidator userValidator;
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody User user, BindingResult result){
         // Validate passwords match
+    	userValidator.validate(user, result);
 
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
         if(errorMap != null)return errorMap;
