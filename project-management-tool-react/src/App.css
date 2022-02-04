@@ -73,3 +73,7 @@ img {
 .form-group label {
   font-size: 1.3em;
 }
+
+.card .btn {
+  margin: 0.1rem;
+}
