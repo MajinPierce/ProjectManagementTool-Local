@@ -21,7 +21,7 @@ class UpdateProjectTask extends Component {
       priority: "",
       dueDate: "",
       projectIdentifier: "",
-      createAt: "",
+      create_At: "",
       errors: {},
     };
     this.onChange = this.onChange.bind(this);
@@ -47,7 +47,7 @@ class UpdateProjectTask extends Component {
       priority,
       dueDate,
       projectIdentifier,
-      createAt,
+      create_At,
     } = nextProps.project_task;
 
     this.setState({
@@ -59,7 +59,7 @@ class UpdateProjectTask extends Component {
       priority,
       dueDate,
       projectIdentifier,
-      createAt,
+      create_At,
     });
   }
 
@@ -79,9 +79,10 @@ class UpdateProjectTask extends Component {
       priority: this.state.priority,
       dueDate: this.state.dueDate,
       projectIdentifier: this.state.projectIdentifier,
-      createAt: this.state.createAt,
+      create_At: this.state.create_At,
     };
 
+    // console.log(UpdateProjectTask);
     this.props.updateProjectTask(
       this.state.projectIdentifier,
       this.state.projectSequence,
@@ -170,6 +171,7 @@ class UpdateProjectTask extends Component {
                     <option value="DONE">DONE</option>
                   </select>
                 </div>
+
                 <input
                   type="submit"
                   className="btn btn-primary btn-block mt-4"

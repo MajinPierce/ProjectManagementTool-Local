@@ -11,7 +11,7 @@ import AddProjectTask from "./components/ProjectBoard/ProjectTasks/AddProjectTas
 import Landing from "./components/Layout/Landing";
 import Register from "./components/UserManagement/Register";
 import Login from "./components/UserManagement/Login";
-import { updateProjectTask } from "./actions/BacklogActions";
+import UpdateProjectTask from "./components/ProjectBoard/ProjectTasks/UpdateProjectTask";
 import SetJWTToken from "./SecurityUtils/SetJWTToken";
 import jwt_decode from "jwt-decode";
 import { SET_CURRENT_USER } from "./actions/Types";
@@ -53,7 +53,7 @@ function App() {
           <Route
             exact
             path="/updateProjectTask/:backlog_id/:pt_id"
-            component={updateProjectTask}
+            component={UpdateProjectTask}
           />
         </Switch>
       </Router>
