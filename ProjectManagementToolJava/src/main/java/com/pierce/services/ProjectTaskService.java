@@ -24,48 +24,42 @@ public class ProjectTaskService {
 	
 	@Autowired
 	private  ProjectRepository projectRepository;
+	
+	@Autowired
+    private ProjectService projectService;
 
-	public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask) {
-		//Exception project not found
-		try {
-			//tasks added to specific project backlog
-			Backlog backlog = backlogRepository.findByProjectIdentifier(projectIdentifier);
-			projectTask.setBacklog(backlog);
+	public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask, String username) {
+		//tasks added to specific project backlog
+		Backlog backlog = projectService.findProjectByIdentifier(projectIdentifier, username).getBacklog();
+		projectTask.setBacklog(backlog);
 			
-			// set up project sequence
-			Integer backlogSequence = backlog.getPTSequence();
-			backlogSequence++;
-			backlog.setPTSequence(backlogSequence);
+		// set up project sequence
+		Integer backlogSequence = backlog.getPTSequence();
+		backlogSequence++;
+		backlog.setPTSequence(backlogSequence);
 			
-			//add sequence to project task
-			projectTask.setProjectSequence(projectIdentifier + "-" + backlogSequence);
-			projectTask.setProjectIdentifier(projectIdentifier);
+		//add sequence to project task
+		projectTask.setProjectSequence(projectIdentifier + "-" + backlogSequence);
+		projectTask.setProjectIdentifier(projectIdentifier);
 			
-			//default task priority
-			if(projectTask.getPriority() == null || projectTask.getPriority() == 0) {
-				projectTask.setPriority(3);
-			}
-			
-			//default project status
-			//enum statuses maybe later
-			if(projectTask.getStatus() == "" || projectTask.getStatus() == null) {
-				projectTask.setStatus("TO_DO");
-			}
-			
-			//persist and return project task
-			return projectTaskRepository.save(projectTask);
-		} catch(Exception e) {
-			throw new ProjectNotFoundException("Project ID '" + projectIdentifier + "' not found");
+		//default task priority
+		if(projectTask.getPriority() == null || projectTask.getPriority() == 0) {
+			projectTask.setPriority(3);
 		}
+			
+		//default project status
+		//enum statuses maybe later
+		if(projectTask.getStatus() == "" || projectTask.getStatus() == null) {
+			projectTask.setStatus("TO_DO");
+		}
+			
+		//persist and return project task
+		return projectTaskRepository.save(projectTask);
 	}
 	
-	public Iterable<ProjectTask> findBacklogById(String id){
-		Project project = projectRepository.findByProjectIdentifier(id);
-
-        if(project==null){
-            throw new ProjectNotFoundException("Project ID '"+ id +"' not found");
-        }
+	public Iterable<ProjectTask> findBacklogById(String id, String username){
 		
+		projectService.findProjectByIdentifier(id, username);
         return projectTaskRepository.findByProjectIdentifierOrderByPriority(id);
     }
 	

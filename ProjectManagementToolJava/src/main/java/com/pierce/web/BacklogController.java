@@ -1,5 +1,6 @@
 package com.pierce.web;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -35,21 +36,21 @@ public class BacklogController {
 	
 	@PostMapping("/{backlog_id}")
     public ResponseEntity<?> addPTtoBacklog(@Valid @RequestBody ProjectTask newProjectTask, 
-    										BindingResult result, @PathVariable String backlog_id){
+    										BindingResult result, @PathVariable String backlog_id, Principal principal){
 
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
         if (errorMap != null) return errorMap;
 
-        ProjectTask projectTask = projectTaskService.addProjectTask(backlog_id, newProjectTask);
+        ProjectTask projectTask = projectTaskService.addProjectTask(backlog_id, newProjectTask, principal.getName());
 
         return new ResponseEntity<ProjectTask>(projectTask, HttpStatus.CREATED);
 
     }
 	
 	@GetMapping("/{backlog_id}")
-	public Iterable<ProjectTask> getProjectBacklog(@PathVariable String backlog_id){
+	public Iterable<ProjectTask> getProjectBacklog(@PathVariable String backlog_id, Principal principal){
 
-        return projectTaskService.findBacklogById(backlog_id);
+        return projectTaskService.findBacklogById(backlog_id, principal.getName());
     }
 	
 	@GetMapping("/{backlog_id}/{pt_id}")
