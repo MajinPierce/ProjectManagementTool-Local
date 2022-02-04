@@ -17,7 +17,7 @@ import jwt_decode from "jwt-decode";
 import { SET_CURRENT_USER } from "./actions/Types";
 import store from "./store";
 import { logout } from "./actions/SecurityActions";
-
+import SecureRoute from "./SecurityUtils/SecureRoute";
 const jwtToken = localStorage.jwtToken;
 
 if (jwtToken) {
@@ -41,16 +41,30 @@ function App() {
     <div className="App">
       <Router location={location} key={location.pathname}>
         <Header />
+
+        <Route exact path="/" component={Landing} />
+        <Route exact path="/register" component={Register} />
+        <Route exact path="/login" component={Login} />
+
         <Switch>
-          <Route exact path="/" component={Landing} />
-          <Route exact path="/register" component={Register} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/dashboard" component={Dashboard} />
-          <Route exact path="/addProject" component={AddProject} />
-          <Route exact path="/updateProject/:id" component={UpdateProject} />
-          <Route exact path="/projectBoard/:id" component={ProjectBoard} />
-          <Route exact path="/addProjectTask/:id" component={AddProjectTask} />
-          <Route
+          <SecureRoute exact path="/dashboard" component={Dashboard} />
+          <SecureRoute exact path="/addProject" component={AddProject} />
+          <SecureRoute
+            exact
+            path="/updateProject/:id"
+            component={UpdateProject}
+          />
+          <SecureRoute
+            exact
+            path="/projectBoard/:id"
+            component={ProjectBoard}
+          />
+          <SecureRoute
+            exact
+            path="/addProjectTask/:id"
+            component={AddProjectTask}
+          />
+          <SecureRoute
             exact
             path="/updateProjectTask/:backlog_id/:pt_id"
             component={UpdateProjectTask}
