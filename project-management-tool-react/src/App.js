@@ -12,6 +12,27 @@ import Landing from "./components/Layout/Landing";
 import Register from "./components/UserManagement/Register";
 import Login from "./components/UserManagement/Login";
 import { updateProjectTask } from "./actions/BacklogActions";
+import SetJWTToken from "./SecurityUtils/SetJWTToken";
+import jwt_decode from "jwt-decode";
+import { SET_CURRENT_USER } from "./actions/Types";
+import store from "./store";
+
+const jwtToken = localStorage.jwtToken;
+
+if (jwtToken) {
+  SetJWTToken(jwtToken);
+  const decoded_jwtToken = jwt_decode(jwtToken);
+  store.dispatch({
+    type: SET_CURRENT_USER,
+    payload: decoded_jwtToken,
+  });
+
+  const currentTime = Date.now() / 1000;
+  if (decoded_jwtToken.exp < currentTime) {
+    //handle logout
+    //window.location.href = "/";
+  }
+}
 
 function App() {
   const location = useLocation;
