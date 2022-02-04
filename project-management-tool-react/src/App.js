@@ -8,7 +8,10 @@ import UpdateProject from "./components/Project/UpdateProject";
 import { useLocation } from "react-router-dom";
 import ProjectBoard from "./components/ProjectBoard/ProjectBoard";
 import AddProjectTask from "./components/ProjectBoard/ProjectTasks/AddProjectTask";
-import UpdateProjectTask from "./components/ProjectBoard/ProjectTasks/UpdateProjectTask";
+import Landing from "./components/Layout/Landing";
+import Register from "./components/UserManagement/Register";
+import Login from "./components/UserManagement/Login";
+import { updateProjectTask } from "./actions/BacklogActions";
 
 function App() {
   const location = useLocation;
@@ -17,6 +20,17 @@ function App() {
       <Header />
       <Router location={location} key={location.pathname}>
         <Switch>
+          {
+            //Public Routes
+          }
+
+          <Route exact path="/" component={Landing} />
+          <Route exact path="/register" component={Register} />
+          <Route exact path="/login" component={Login} />
+
+          {
+            //Private Routes
+          }
           <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/addProject" component={AddProject} />
           <Route exact path="/updateProject/:id" component={UpdateProject} />
@@ -25,7 +39,7 @@ function App() {
           <Route
             exact
             path="/updateProjectTask/:backlog_id/:pt_id"
-            component={UpdateProjectTask}
+            component={updateProjectTask}
           />
         </Switch>
       </Router>
