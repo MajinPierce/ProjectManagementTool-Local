@@ -7,6 +7,7 @@ import com.pierce.domain.Backlog;
 import com.pierce.domain.Project;
 import com.pierce.domain.User;
 import com.pierce.exceptions.ProjectIdException;
+import com.pierce.exceptions.ProjectNotFoundException;
 import com.pierce.repositories.BacklogRepository;
 import com.pierce.repositories.ProjectRepository;
 import com.pierce.repositories.UserRepository;
@@ -46,47 +47,32 @@ public class ProjectService {
 		}
 	}
 	
-	public Project updateProject(String projectId, Project newProjectInfo) {
-		Project project = findProjectByIdentifier(projectId.toUpperCase());
-		
-		if(newProjectInfo.getProjectName() != null) {
-			project.setProjectName(newProjectInfo.getProjectName());
-		}
-		if(newProjectInfo.getDescription() != null) {
-			project.setDescription(newProjectInfo.getDescription());
-		}
-		if(newProjectInfo.getStartDate() != null) {
-			project.setStartDate(newProjectInfo.getStartDate());
-		}
-		if(newProjectInfo.getEndDate() != null) {
-			project.setEndDate(newProjectInfo.getEndDate());
-		}
-		
-		return projectRepository.save(project);
+	/*
+	 * Need to make a method to properly update projects using put
+	 * 
+	 */
+	
+	public Project findProjectByIdentifier(String projectId, String username){
+        //Only want to return the project if the user looking for it is the owner
+        Project project = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
+
+        if(project == null){
+            throw new ProjectIdException("Project ID '" + projectId + "' does not exist");
+        }
+
+        if(!project.getProjectLeader().equals(username)){
+            throw new ProjectNotFoundException("Project not found in your account");
+        }
+        
+        return project;
+    }
+
+	
+	public Iterable<Project> findAllProjects(String username){
+		return projectRepository.findAllByProjectLeader(username);
 	}
 	
-	public Project findProjectByIdentifier(String projectId) {
-		
-		Project project = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
-		
-		if(project == null) {
-			throw new ProjectIdException("Project ID '" + projectId + "' does not exist");
-		}
-		
-		return project;
-	}
-	
-	public Iterable<Project> findAllProjects(){
-		return projectRepository.findAll();
-	}
-	
-	public void deleteProjectByIdentifier(String projectId) {
-		Project project = projectRepository.findByProjectIdentifier(projectId);
-		
-		if(project == null) {
-			throw new ProjectIdException("Cannot delete project with ID '" + projectId + "'. This project does not exist.");
-		}
-		
-		projectRepository.delete(project);
+	public void deleteProjectByIdentifier(String projectId, String username) {		
+		projectRepository.delete(findProjectByIdentifier(projectId, username));
 	}
 }

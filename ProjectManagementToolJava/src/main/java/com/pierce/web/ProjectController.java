@@ -44,25 +44,24 @@ public class ProjectController {
     }
 	
 	@GetMapping("/{projectId}")
-	public ResponseEntity<?> getProjectById(@PathVariable String projectId){
-		
-		Project createdProject = projectService.findProjectByIdentifier(projectId);
-		return new ResponseEntity<Project>(createdProject, HttpStatus.OK);
-	}
+    public ResponseEntity<?> getProjectById(@PathVariable String projectId, Principal principal){
+        Project project = projectService.findProjectByIdentifier(projectId, principal.getName());
+        return new ResponseEntity<Project>(project, HttpStatus.OK);
+    }
 	
 	@GetMapping("/all")
-	public Iterable<Project> getAllProjects(){return projectService.findAllProjects();}
+    public Iterable<Project> getAllProjects(Principal principal){return projectService.findAllProjects(principal.getName());}
 	
-	@PutMapping("/{projectId}")
-	public ResponseEntity<?> updateProject(@PathVariable String projectId, @RequestBody Project newProjectInfo){
-		Project updatedProject = projectService.updateProject(projectId, newProjectInfo);
-		return new ResponseEntity<Project>(updatedProject, HttpStatus.OK);
-	}
+	/*
+	 * Need to create a pathway for updating a project using PUT
+	 * @PutMapping("/{projectId}")
+	 */
 	
 	@DeleteMapping("/{projectId}")
-	public ResponseEntity<?> deleteProject(@PathVariable String projectId){
-		projectService.deleteProjectByIdentifier(projectId.toUpperCase());
-		return new ResponseEntity<String>("Project with ID '" + projectId + "' was successfully deleted", HttpStatus.OK);
+	public ResponseEntity<?> deleteProject(@PathVariable String projectId, Principal principal){
+		
+		projectService.deleteProjectByIdentifier(projectId.toUpperCase(), principal.getName());
+	    return new ResponseEntity<String>("Project with ID: '" + projectId + "' was deleted", HttpStatus.OK);
 	}
 	
 }
