@@ -17,20 +17,12 @@ function App() {
   const location = useLocation;
   return (
     <div className="App">
-      <Header />
       <Router location={location} key={location.pathname}>
+        <Header />
         <Switch>
-          {
-            //Public Routes
-          }
-
           <Route exact path="/" component={Landing} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
-
-          {
-            //Private Routes
-          }
           <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/addProject" component={AddProject} />
           <Route exact path="/updateProject/:id" component={UpdateProject} />
