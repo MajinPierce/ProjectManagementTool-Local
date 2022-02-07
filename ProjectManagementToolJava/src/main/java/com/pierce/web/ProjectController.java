@@ -54,10 +54,10 @@ public class ProjectController {
 	
 	
 	@GetMapping("/{projectId}")
-	@Operation(summary = "Get project by project id", responses = {
+	@Operation(summary = "Get a specific project", responses = {
             @ApiResponse(description = "Get project success", responseCode = "200",
                     content = @Content(mediaType = "application/json",schema = @Schema(implementation = Project.class))),
-            @ApiResponse(description = "Project not found", responseCode = "404",content = @Content)
+            @ApiResponse(description = "Project not found", responseCode = "400",content = @Content)
     })
     public ResponseEntity<?> getProjectById(@PathVariable String projectId, Principal principal){
         Project project = projectService.findProjectByIdentifier(projectId, principal.getName());
@@ -77,7 +77,7 @@ public class ProjectController {
 	
 	
 	@DeleteMapping("/{projectId}")
-	@Operation(summary = "Delete a project, specified by the project id")
+	@Operation(summary = "Delete a project")
 	public ResponseEntity<?> deleteProject(@PathVariable String projectId, Principal principal){
 		
 		projectService.deleteProjectByIdentifier(projectId.toUpperCase(), principal.getName());
