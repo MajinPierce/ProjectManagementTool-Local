@@ -13,7 +13,7 @@ class Landing extends Component {
   render() {
     return (
       <div className="landing">
-        <div className="light-overlay landing-inner text-dark">
+        <div className="light-overlay landing-inner">
           <div className="container">
             <div className="row">
               <div className="col-md-12 text-center">
@@ -24,10 +24,10 @@ class Landing extends Component {
                   Create your account to join active projects or start your own
                 </p>
                 <hr />
-                <Link className="btn btn-lg btn-primary mr-2" to="/register">
+                <Link className="btn btn-lg mr-2 primary" to="/register">
                   Sign Up
                 </Link>
-                <Link className="btn btn-lg btn-secondary mr-2" to="/login">
+                <Link className="btn btn-lg mr-2 secondary" to="/login">
                   Login
                 </Link>
               </div>
