@@ -1,7 +1,6 @@
 package com.pierce.web;
 
 import java.security.Principal;
-import java.util.List;
 
 import javax.validation.Valid;
 
@@ -23,9 +22,13 @@ import com.pierce.domain.ProjectTask;
 import com.pierce.services.MapValidationErrorService;
 import com.pierce.services.ProjectTaskService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/backlog")
 @CrossOrigin //be careful with this
+@Tag(name = "Backlog")
 public class BacklogController {
 	
 	@Autowired
@@ -34,7 +37,9 @@ public class BacklogController {
 	@Autowired
     private MapValidationErrorService mapValidationErrorService;
 	
+	
 	@PostMapping("/{backlog_id}")
+	@Operation(summary = "Add project task to backlog, specified by backlog id")
     public ResponseEntity<?> addPTtoBacklog(@Valid @RequestBody ProjectTask newProjectTask, 
     										BindingResult result, @PathVariable String backlog_id, Principal principal){
 
@@ -47,20 +52,25 @@ public class BacklogController {
 
     }
 	
+	
 	@GetMapping("/{backlog_id}")
+	@Operation(summary = "Get project backlog by backlog id")
 	public Iterable<ProjectTask> getProjectBacklog(@PathVariable String backlog_id, Principal principal){
 
         return projectTaskService.findBacklogById(backlog_id, principal.getName());
     }
 	
 	@GetMapping("/{backlog_id}/{pt_id}")
+	@Operation(summary = "Get project task by backlog id and project task id")
 	public ResponseEntity<?> getProjectTask(@PathVariable String backlog_id, @PathVariable String pt_id, Principal principal){
 		
 		ProjectTask projectTask = projectTaskService.findPTByProjectSequence(backlog_id, pt_id, principal.getName());
 		return new ResponseEntity<ProjectTask>(projectTask, HttpStatus.OK);
 	}
 	
+	
 	@PatchMapping("/{backlog_id}/{pt_id}")
+	@Operation(summary = "Update a specific project task, specified by backlog id and project task id")
     public ResponseEntity<?> updateProjectTask(@Valid @RequestBody ProjectTask projectTask, BindingResult result,
                                                @PathVariable String backlog_id, @PathVariable String pt_id, Principal principal){
 
@@ -73,7 +83,9 @@ public class BacklogController {
 
     }
 	
+	
 	@DeleteMapping("/{backlog_id}/{pt_id}")
+	@Operation(summary = "Delete project task from a project backlog, specified by backlog id and project task id")
     public ResponseEntity<?> deleteProjectTask(@PathVariable String backlog_id, @PathVariable String pt_id, Principal principal){
 		
         projectTaskService.deletePTByProjectSequence(backlog_id, pt_id, principal.getName());

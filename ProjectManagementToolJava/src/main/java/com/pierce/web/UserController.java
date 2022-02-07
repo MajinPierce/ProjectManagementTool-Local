@@ -22,10 +22,15 @@ import com.pierce.security.JwtTokenProvider;
 import com.pierce.services.MapValidationErrorService;
 import com.pierce.services.UserService;
 import com.pierce.validator.UserValidator;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import static com.pierce.security.SecurityConstants.TOKEN_PREFIX;
 
 @RestController
 @RequestMapping("/api/users")
+@Tag(name = "User")
 public class UserController {
 
     @Autowired
@@ -42,8 +47,10 @@ public class UserController {
     
     @Autowired
     private JwtTokenProvider tokenProvider;
+    
 
     @PostMapping("/register")
+    @Operation(summary = "Register a new user")
     public ResponseEntity<?> registerUser(@Valid @RequestBody User user, BindingResult result){
         // Validate passwords match
     	userValidator.validate(user, result);
@@ -56,7 +63,9 @@ public class UserController {
         return  new ResponseEntity<User>(newUser, HttpStatus.CREATED);
     }
     
+    
     @PostMapping("/login")
+    @Operation(summary = "Authenticate user")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest, BindingResult result){
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
         if(errorMap != null) return errorMap;
