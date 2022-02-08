@@ -14,39 +14,39 @@ class ProjectTask extends Component {
     let priorityClass;
 
     if (project_task.priority === 1) {
-      priorityClass = "bg-danger text-light";
+      priorityClass = "high-priority";
       priorityString = "HIGH";
     }
 
     if (project_task.priority === 2) {
-      priorityClass = "bg-warning text-light";
+      priorityClass = "medium-priority";
       priorityString = "MEDIUM";
     }
 
     if (project_task.priority === 3) {
-      priorityClass = "bg-info text-light";
+      priorityClass = "low-priority";
       priorityString = "LOW";
     }
 
     return (
-      <div className="card mb-1 bg-light">
-        <div className={`card-header text-primary ${priorityClass}`}>
+      <div className="card mb-1">
+        <div className={`card-header ${priorityClass}`}>
           ID: {project_task.projectSequence} -- Priority: {priorityString}
         </div>
-        <div className="card-body bg-light">
+        <div className="card-body">
           <h5 className="card-title">{project_task.summary}</h5>
           <p className="card-text text-truncate ">
             {project_task.acceptanceCriteria}
           </p>
           <Link
             to={`/updateProjectTask/${project_task.projectIdentifier}/${project_task.projectSequence}`}
-            className="btn btn-primary"
+            className="btn primary"
           >
             View / Update
           </Link>
 
           <button
-            className="btn btn-danger ml-4"
+            className="btn ml-4 secondary delete"
             onClick={this.onDeleteClick.bind(
               this,
               project_task.projectIdentifier,

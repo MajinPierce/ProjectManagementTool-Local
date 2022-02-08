@@ -21,7 +21,7 @@ class Landing extends Component {
                   Personal Project Management Tool
                 </h1>
                 <p className="lead">
-                  Create your account to join active projects or start your own
+                  Create an account to start managing your projects
                 </p>
                 <hr />
                 <Link className="btn btn-lg mr-2 primary" to="/register">

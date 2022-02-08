@@ -100,7 +100,7 @@ class UpdateProjectTask extends Component {
             <div className="col-md-8 m-auto">
               <Link
                 to={`/projectBoard/${this.state.projectIdentifier}`}
-                className="btn btn-light"
+                className="btn secondary"
               >
                 Back to Project Board
               </Link>
@@ -172,10 +172,7 @@ class UpdateProjectTask extends Component {
                   </select>
                 </div>
 
-                <input
-                  type="submit"
-                  className="btn btn-primary btn-block mt-4"
-                />
+                <input type="submit" className="btn primary btn-block mt-4" />
               </form>
             </div>
           </div>
