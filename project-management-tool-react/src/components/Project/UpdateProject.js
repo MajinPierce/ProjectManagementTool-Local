@@ -141,10 +141,7 @@ class UpdateProject extends Component {
                     onChange={this.onChange}
                   />
                 </div>
-                <input
-                  type="submit"
-                  className="btn btn-primary btn-block mt-4"
-                />
+                <input type="submit" className="btn primary btn-block mt-4" />
               </form>
             </div>
           </div>

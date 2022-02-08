@@ -10,8 +10,8 @@ const ProjectItem = (props) => {
   };
 
   return (
-    <div className="container">
-      <div className="card card-body bg-light mb-3">
+    <div className="project-item">
+      <div className="card card-body mb-3">
         <div className="row">
           <div className="col-2">
             <span className="mx-auto">{props.project.projectIdentifier}</span>
@@ -22,21 +22,27 @@ const ProjectItem = (props) => {
           </div>
           <div className="col-md-4 d-lg-block">
             <ul className="list-group">
-              <Link to={`/projectBoard/${props.project.projectIdentifier}`}>
+              <Link
+                to={`/projectBoard/${props.project.projectIdentifier}`}
+                style={{ textDecoration: "none" }}
+              >
                 <li className="list-group-item board">
-                  <i className="fas fa-flag-checkered pr-1"> Project Board </i>
+                  <i className="board"> Project Board </i>
                 </li>
               </Link>
-              <Link to={`/updateProject/${props.project.projectIdentifier}`}>
+              <Link
+                to={`/updateProject/${props.project.projectIdentifier}`}
+                style={{ textDecoration: "none" }}
+              >
                 <li className="list-group-item update">
-                  <i className="fas fa-edit pr-1"> Update Project Info</i>
+                  <i className="edit"> Update Project Info</i>
                 </li>
               </Link>
               <li
                 className="list-group-item delete"
                 onClick={deleteClickHandler}
               >
-                <i className="fas fa-minus-circle pr-1"> Delete Project</i>
+                <i className="delete"> Delete Project</i>
               </li>
             </ul>
           </div>
